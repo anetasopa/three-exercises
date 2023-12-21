@@ -1,6 +1,11 @@
-import * as THREE from 'three/examples/jsm/controls/OrbitControls.js';
+import * as dat from 'lil-gui';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-import { OrbitControls } from '';
+/**
+ * Debug
+ */
+const gui = new dat.GUI();
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
@@ -43,6 +48,7 @@ renderer.setSize(sizes.width, sizes.height);
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+
 /**
  * Animate
  */
