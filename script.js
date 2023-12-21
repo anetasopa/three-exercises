@@ -1,4 +1,6 @@
-import * as THREE from 'three';
+import * as THREE from 'three/examples/jsm/controls/OrbitControls.js';
+
+import { OrbitControls } from '';
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
@@ -23,7 +25,12 @@ const sizes = {
 };
 
 // Camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  sizes.width / sizes.height,
+  1,
+  100,
+);
 camera.position.z = 3;
 scene.add(camera);
 
@@ -31,4 +38,30 @@ scene.add(camera);
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(sizes.width, sizes.height);
 
-renderer.render(scene, camera);
+// renderer.render(scene, camera);
+
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+/**
+ * Animate
+ */
+let time = Date.now();
+
+const tick = () => {
+  // Time
+  const currentTime = Date.now();
+  const deltaTime = currentTime - time;
+  time = currentTime;
+
+  // Update objects
+  mesh.rotation.y += 0.01 * deltaTime;
+
+  // Render
+  renderer.render(scene, camera);
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(tick);
+};
+
+tick();
