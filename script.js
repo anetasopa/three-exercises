@@ -2,6 +2,24 @@ import * as dat from 'lil-gui';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+// Textures
+const loadingManager = new THREE.LoadingManager();
+loadingManager.onStart = () => {
+  console.log('loading started');
+};
+loadingManager.onLoad = () => {
+  console.log('loading finished');
+};
+loadingManager.onProgress = () => {
+  console.log('loading progressing');
+};
+loadingManager.onError = () => {
+  console.log('loading error');
+};
+
+const textureLoader = new THREE.TextureLoader(loadingManager);
+const colorTexture = textureLoader.load('./color.jpg');
+
 /**
  * Debug
  */
@@ -16,8 +34,9 @@ const scene = new THREE.Scene();
 // Object
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 const material = new THREE.MeshBasicMaterial({
-  color: 0xff0000,
-  wireframe: true,
+  map: colorTexture,
+  // color: 0xff0000,
+  // wireframe: true,
 });
 // const geometry = new THREE.SphereGeometry(1, 32, 32)
 const mesh = new THREE.Mesh(geometry, material);
@@ -31,11 +50,13 @@ const sizes = {
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
-  75,
+  50,
   sizes.width / sizes.height,
   1,
   100,
 );
+camera.position.x = 3;
+camera.position.y = 3;
 camera.position.z = 3;
 scene.add(camera);
 
@@ -61,7 +82,7 @@ const tick = () => {
   time = currentTime;
 
   // Update objects
-  mesh.rotation.y += 0.01 * deltaTime;
+  mesh.rotation.y += 0.001 * deltaTime;
 
   // Render
   renderer.render(scene, camera);
