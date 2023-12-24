@@ -19,6 +19,7 @@ loadingManager.onError = () => {
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const colorTexture = textureLoader.load('./color.jpg');
+const minecraftTexture = textureLoader.load('./minecraft.png');
 
 /**
  * Debug
@@ -34,7 +35,7 @@ const scene = new THREE.Scene();
 // Object
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 const material = new THREE.MeshBasicMaterial({
-  map: colorTexture,
+  map: minecraftTexture,
   // color: 0xff0000,
   // wireframe: true,
 });
