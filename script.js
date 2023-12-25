@@ -24,7 +24,17 @@ const minecraftTexture = textureLoader.load('./minecraft.png');
 /**
  * Debug
  */
+
 const gui = new dat.GUI();
+let obj = {
+  color: '#AA00FF',
+};
+
+const colorControl = gui.addColor(obj, 'color');
+
+colorControl.onChange(function (value) {
+  material.color.set(value);
+});
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
@@ -36,9 +46,9 @@ const scene = new THREE.Scene();
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 const material = new THREE.MeshBasicMaterial({
   map: minecraftTexture,
-  // color: 0xff0000,
-  // wireframe: true,
+  color: new THREE.Color(obj.color), // Initialize with color1
 });
+
 // const geometry = new THREE.SphereGeometry(1, 32, 32)
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
