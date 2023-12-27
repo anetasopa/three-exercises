@@ -20,7 +20,6 @@ loadingManager.onError = () => {
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const colorTexture = textureLoader.load('./color.jpg');
 const minecraftTexture = textureLoader.load('./minecraft.png');
-
 /**
  * Debug
  */
@@ -64,11 +63,13 @@ scene.add(sphere, plane, torus);
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 const material = new THREE.MeshBasicMaterial({
   map: minecraftTexture,
-  color: new THREE.Color(obj.color), // Initialize with color1
+  color: new THREE.Color(obj.color), // Initialize with color
 });
 
 // const geometry = new THREE.SphereGeometry(1, 32, 32)
 const mesh = new THREE.Mesh(geometry, material);
+mesh.position.x += 2.5;
+mesh.position.y += 2;
 scene.add(mesh);
 
 // Sizes
@@ -79,7 +80,7 @@ const sizes = {
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
-  50,
+  75,
   sizes.width / sizes.height,
   1,
   100,
