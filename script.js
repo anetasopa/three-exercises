@@ -20,19 +20,86 @@ loadingManager.onError = () => {
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const colorTexture = textureLoader.load('./color.jpg');
 const minecraftTexture = textureLoader.load('./minecraft.png');
+
+// Textures MeshBasicMaterials
+const loadingManager2 = new THREE.LoadingManager();
+loadingManager2.onStart = () => {
+  console.log('loading started');
+};
+loadingManager2.onLoad = () => {
+  console.log('loading finished');
+};
+loadingManager2.onProgress = () => {
+  console.log('loading progressing');
+};
+loadingManager2.onError = () => {
+  console.log('loading error');
+};
+
+const textureLoader2 = new THREE.TextureLoader(loadingManager2);
+const minecraftTexture2 = textureLoader2.load('./color.jpg');
+
 /**
  * Debug
  */
 
 const gui = new dat.GUI();
-let obj = {
+
+// color
+let objColor = {
   color: '#AA00FF',
 };
-
-const colorControl = gui.addColor(obj, 'color');
+const colorControl = gui.addColor(objColor, 'color');
 
 colorControl.onChange(function (value) {
   material.color.set(value);
+});
+
+// size
+let objSize = { size: 'Medium' };
+
+const sizeControl = gui.add(objSize, 'size', ['Small', 'Medium', 'Large']);
+
+sizeControl.onChange(function (value) {
+  material.size.set(value);
+});
+
+sizeControl.onChange(function (value) {
+  // Remove this line - there is no "size" property in the material
+  // material.size.set(value);
+
+  // Update the cube size based on the selected option
+  if (value === 'Large') {
+    // Adjust cube geometry dimensions
+    geometry.parameters.width = 1.5;
+    geometry.parameters.height = 1.5;
+    geometry.parameters.depth = 1.5;
+
+    // Update cube scale to be 2 times larger
+    mesh.scale.set(1.5, 1.5, 1.5);
+  } else if (value === 'Small') {
+    // Adjust cube geometry dimensions
+    geometry.parameters.width = 0.5;
+    geometry.parameters.height = 0.5;
+    geometry.parameters.depth = 0.5;
+
+    // Update cube scale to be 2 times smaller
+    mesh.scale.set(0.5, 0.5, 0.5);
+  } else {
+    // Restore original cube geometry dimensions
+    geometry.parameters.width = 1;
+    geometry.parameters.height = 1;
+    geometry.parameters.depth = 1;
+
+    // Restore original cube scale
+    mesh.scale.set(1, 1, 1);
+  }
+
+  // Update cube material with the new texture
+  material.map = value === 'Large' ? minecraftTexture : minecraftTexture;
+
+  // Reload the texture
+  material.map.needsUpdate = true;
 });
 
 // Canvas
@@ -40,7 +107,9 @@ const canvas = document.querySelector('canvas.webgl');
 
 // Objects
 // MeshBasicMaterials
-const meshBasicMaterials = new THREE.MeshBasicMaterial();
+const meshBasicMaterials = new THREE.MeshBasicMaterial({
+  map: minecraftTexture2,
+});
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(0.5, 16, 16),
   meshBasicMaterials,
@@ -63,7 +132,8 @@ scene.add(sphere, plane, torus);
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 const material = new THREE.MeshBasicMaterial({
   map: minecraftTexture,
-  color: new THREE.Color(obj.color), // Initialize with color
+  color: new THREE.Color(objColor.color), // Initialize with color
+  size: new THREE.Color(objSize.size), // Initialize with size
 });
 
 // const geometry = new THREE.SphereGeometry(1, 32, 32)
@@ -93,6 +163,7 @@ scene.add(camera);
 // Renderer
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(sizes.width, sizes.height);
+renderer.setClearColor('./checkerboard-1024x1024.png');
 
 // renderer.render(scene, camera);
 
