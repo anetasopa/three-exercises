@@ -39,8 +39,26 @@ colorControl.onChange(function (value) {
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
 
+// Objects
+// MeshBasicMaterials
+const meshBasicMaterials = new THREE.MeshBasicMaterial();
+const sphere = new THREE.Mesh(
+  new THREE.SphereGeometry(0.5, 16, 16),
+  meshBasicMaterials,
+);
+sphere.position.x = -1.5;
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), meshBasicMaterials);
+// plane.position.x = -1;
+const torus = new THREE.Mesh(
+  new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+  meshBasicMaterials,
+);
+torus.position.x = 1.5;
+
 // Scene
 const scene = new THREE.Scene();
+scene.add(sphere, plane, torus);
 
 // Object
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
@@ -85,6 +103,7 @@ controls.enableDamping = true;
  * Animate
  */
 let time = Date.now();
+let clock = new THREE.Clock();
 
 const tick = () => {
   // Time
@@ -92,9 +111,19 @@ const tick = () => {
   const deltaTime = currentTime - time;
   time = currentTime;
 
-  // Update objects
+  // Update object
   mesh.rotation.y += 0.001 * deltaTime;
 
+  // Update objects
+  const elapsedTime = clock.getElapsedTime();
+
+  sphere.rotation.y += 0.001 * deltaTime;
+  plane.rotation.y += 0.001 * deltaTime;
+  torus.rotation.y += 0.001 * deltaTime;
+
+  sphere.rotation.x += 0.001 * deltaTime;
+  plane.rotation.x += 0.001 * deltaTime;
+  torus.rotation.x += 0.001 * deltaTime;
   // Render
   renderer.render(scene, camera);
 
