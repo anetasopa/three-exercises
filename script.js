@@ -112,19 +112,24 @@ let canvas = document.querySelector('canvas.webgl');
 const meshBasicMaterials = new THREE.MeshBasicMaterial({
   map: colorTexture,
 });
+// sphere
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(0.5, 16, 16),
   meshBasicMaterials,
 );
-sphere.position.x = -1.5;
-
+sphere.position.x = -17;
+sphere.position.y = -6;
+// plane
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), meshBasicMaterials);
-// plane.position.x = -1;
+plane.position.x = -10;
+plane.position.y = -5;
+// torus
 const torus = new THREE.Mesh(
   new THREE.TorusGeometry(0.3, 0.2, 16, 32),
   meshBasicMaterials,
 );
-torus.position.x = 1.5;
+torus.position.x = -5;
+torus.position.y = -4;
 
 // Scene
 scene.background = '#FFFFFF';
