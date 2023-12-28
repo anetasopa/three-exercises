@@ -2,6 +2,8 @@ import * as dat from 'lil-gui';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+const scene = new THREE.Scene();
+
 // Textures
 const loadingManager = new THREE.LoadingManager();
 loadingManager.onStart = () => {
@@ -37,7 +39,7 @@ loadingManager2.onError = () => {
 };
 
 const textureLoader2 = new THREE.TextureLoader(loadingManager2);
-const minecraftTexture2 = textureLoader2.load('./color.jpg');
+const minecraftTexture2 = textureLoader2.load('./minecraft.png');
 
 /**
  * Debug
@@ -103,7 +105,7 @@ sizeControl.onChange(function (value) {
 });
 
 // Canvas
-const canvas = document.querySelector('canvas.webgl');
+let canvas = document.querySelector('canvas.webgl');
 
 // Objects
 // MeshBasicMaterials
@@ -125,7 +127,7 @@ const torus = new THREE.Mesh(
 torus.position.x = 1.5;
 
 // Scene
-const scene = new THREE.Scene();
+scene.background = colorTexture;
 scene.add(sphere, plane, torus);
 
 // Object
@@ -163,7 +165,6 @@ scene.add(camera);
 // Renderer
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(sizes.width, sizes.height);
-renderer.setClearColor('./checkerboard-1024x1024.png');
 
 // renderer.render(scene, camera);
 
