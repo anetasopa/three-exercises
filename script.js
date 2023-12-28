@@ -110,7 +110,7 @@ let canvas = document.querySelector('canvas.webgl');
 // Objects
 // MeshBasicMaterials
 const meshBasicMaterials = new THREE.MeshBasicMaterial({
-  map: minecraftTexture2,
+  map: colorTexture,
 });
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(0.5, 16, 16),
@@ -127,7 +127,7 @@ const torus = new THREE.Mesh(
 torus.position.x = 1.5;
 
 // Scene
-scene.background = colorTexture;
+scene.background = '#FFFFFF';
 scene.add(sphere, plane, torus);
 
 // Object
